@@ -9,7 +9,9 @@ function Content() {
   useEffect(() => {
     const fetchProducts = async () => {
         const url = `${API_URL}/store`;
+        console.log('in react')
         const res = await axios.get(url);
+        console.log(res)
         setProducts(res.data);
     };
     fetchProducts();
@@ -20,9 +22,10 @@ function Content() {
         <div className="row">
             {products.map((product) => (
                 <div className="box">
-                    <img src={`${API_URL}/${product.imageUrl}`} width='300px' alt="product image" />
+                    <img src={`${API_URL}/${product.imageURL}`} width='300px' alt="product image" />
                     <h3>{product.name}</h3>
                     <p>{product.desc}</p>
+                    <p>{product.rating}</p>
                     <h4>{product.price}</h4>
                     <p><button>Add to Cart</button></p>
                 </div>
