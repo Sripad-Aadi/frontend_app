@@ -4,7 +4,7 @@ import { AppContext } from "../App";
 import axios from "axios"
 
 function Cart() {
-  const { cart, setCart, user, setUser } = useContext(AppContext);
+  const { cart, setCart, user } = useContext(AppContext);
   const [orderValue, setOrderValue] = useState(0);
   const API_URL = import.meta.env.VITE_API_URL
   const Navigate = useNavigate()
@@ -33,18 +33,20 @@ function Cart() {
   };
 
   const placeOrder = async ()=>{
-        const url = API_URL+'/orders/placeOrder'
-        console.log(url)
-        const order ={
-            email:user.email,
-            orderValue:orderValue,
-            items:cart
-        }
-        console.log('in placeorder')
-        const response = await axios.post(url,order)
-        console.log(response.data)
-        Navigate('/')
+    if(user?.email){
+      const url = API_URL+'/orders/placeOrder'
+      const order ={
+          email:user.email,
+          orderValue:orderValue,
+          items:cart
+      }
+      const response = await axios.post(url, order, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setCart([]);
+      Navigate('/orders')
     }
+  }
 
   useEffect(() => {
     setOrderValue(
@@ -72,7 +74,7 @@ function Cart() {
         <strong>Order Value:{orderValue}</strong>
       </p>
       <p>
-        <button onClick={placeOrder}>Place Order</button>
+        {user?.email ?  <button onClick={placeOrder}>Place Order</button> :  <button onClick={()=>Navigate("/login")}>Login to Order</button> }
       </p>
     </div>
   );
