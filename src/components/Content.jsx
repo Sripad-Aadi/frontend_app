@@ -1,11 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import {AppContext} from '../App'
 import './Content.css'
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL
 
 function Content() {
   const [products, setProducts] = useState([]);
-  
+  const { user, setUser, cart, setCart } = useContext(AppContext);
+
+  const addToCart =(product)=>{
+     const found = cart.find((item) => item._id === product._id);
+    if (!found) {
+      product.quantity = 1;
+      setCart([...cart,product]);
+    }
+  }
+
   useEffect(() => {
     const fetchProducts = async () => {
         const url = `${API_URL}/store`;
@@ -25,7 +35,7 @@ function Content() {
                     <p>{product.desc}</p>
                     <p>{product.rating}</p>
                     <h4>{product.price}</h4>
-                    <p><button>Add to Cart</button></p>
+                    <p><button onClick={() => addToCart(product)}>Add to Cart</button></p>
                 </div>
             ))}
         </div>
