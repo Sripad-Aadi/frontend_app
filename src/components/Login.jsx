@@ -19,7 +19,7 @@ export default function Login(){
         <div>
             <h2>Login Page</h2>
             <p><input type="text" onChange={(e)=>setUser({...user,email:e.target.value})} placeholder="Email" /></p>
-            <p><input type="text" onChange={(e)=>setUser({...user,password:e.target.value})} placeholder="Password" /></p>
+            <p><input type="password" onChange={(e)=>setUser({...user,password:e.target.value})} placeholder="Password" /></p>
             <p><button onClick={handleLogin}>Login</button></p>
             <p>
                 <Link to='/register'>New User. Register here.</Link>
